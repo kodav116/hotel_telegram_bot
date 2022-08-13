@@ -40,7 +40,7 @@ logger_config = {
 
 def internationalize(key: str, msg: Message) -> str:
     """
-    takes text in vocabulary in current language with key
+    берет текст из словаря согласно ключу языка
     :param key: str key
     :param msg: Message
     :return: text of message from vocabulary
@@ -97,7 +97,7 @@ def get_parameters_information(msg: Message) -> str:
 
 def make_message(msg: Message, prefix: str) -> str:
     """
-   Возвращает вопрос или сообщение об оишбочном вводе, в зависмости от страны и префикса
+   Возвращает вопрос или сообщение об ошибочном вводе, в зависмости от страны и префикса
     :param msg: Message
     :param prefix: prefix for key in vocabulary dictionary
     :return: string like message
