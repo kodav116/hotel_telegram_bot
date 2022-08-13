@@ -15,7 +15,7 @@ X_RAPIDAPI_KEY = os.getenv('X_RAPIDAPI_KEY', default= '6589b886eamsha031e253e51d
 
 def exact_location(data: dict, loc_id: str) -> str:
     """
-     gets the id of location and returns locations name from data
+    Получает ID места и получает о нем информацию.
     :param data: dict Message
     :param loc_id: location id
     :return: location name
@@ -61,7 +61,7 @@ def request_locations(msg):
 
 def make_locations_list(msg: Message) -> dict:
     """
-    gets data from hotel api response and generate dict: location name - location id
+   Получает информацию с API про отели и делает dict: location name - location id
     :param msg: Message
     :return: dict: location name - location id
     """

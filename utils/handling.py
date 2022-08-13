@@ -1,11 +1,13 @@
 import re
+
+from commands.commands import vocabulary
+
 from datetime import datetime, timedelta
 
 from telebot.types import Message
 from loguru import logger
 
 from bot_redis import redis_db
-from commands import vocabulary
 
 
 steps = {
@@ -52,7 +54,7 @@ _ = internationalize
 
 def is_input_correct(msg: Message) -> bool:
     """
-    Checks the correctness of incoming messages as search parameters
+   Проверят корректность информации для поиска
     :param msg: Message
     :return: True if the message text is correct
     """
@@ -70,7 +72,7 @@ def is_input_correct(msg: Message) -> bool:
 
 def get_parameters_information(msg: Message) -> str:
     """
-    generates a message with information about the current search parameters
+    Генерация сообщения с параметрами поиска
     :param msg:
     :return: string like information about search parameters
     """
@@ -95,8 +97,7 @@ def get_parameters_information(msg: Message) -> str:
 
 def make_message(msg: Message, prefix: str) -> str:
     """
-    makes and returns messages with information about an invalid input or with question, depending on the prefix and
-    state
+   Возвращает вопрос или сообщение об оишбочном вводе, в зависмости от страны и префикса
     :param msg: Message
     :param prefix: prefix for key in vocabulary dictionary
     :return: string like message
@@ -111,7 +112,7 @@ def make_message(msg: Message, prefix: str) -> str:
 
 def hotel_price(hotel: dict) -> int:
     """
-    return hotel price
+    Возвращает цену отеля
     :param hotel: dict - hotel information
     :return: integer or float like number
     """
@@ -130,7 +131,7 @@ def hotel_price(hotel: dict) -> int:
 
 def hotel_address(hotel: dict, msg: Message) -> str:
     """
-    returns hotel address
+    Возвращает адрес отеля
     :param msg: Message
     :param hotel: dict - hotel information
     :return: hotel address
@@ -143,7 +144,7 @@ def hotel_address(hotel: dict, msg: Message) -> str:
 
 def hotel_rating(rating: float, msg: Message) -> str:
     """
-    returns rating hotel in asterisks view
+    Возвращает звезды отеля
     :param rating: hotel rating
     :param msg: Message
     :return: string like asterisks view hotel rating
@@ -155,7 +156,7 @@ def hotel_rating(rating: float, msg: Message) -> str:
 
 def check_in_n_out_dates(check_in: datetime = None, check_out: datetime = None) -> dict:
     """
-    Converts the dates of check-in and check-out into a string format, if no dates are specified, today and tomorrow are taken
+    Делает дату въезда и выезда, если без них, то берет сегодня и завтра
     :param check_in: check-in date
     :param check_out: check-out date
     :return: dict with check-in and check-out dates
@@ -174,7 +175,7 @@ def check_in_n_out_dates(check_in: datetime = None, check_out: datetime = None) 
 
 def add_user(msg: Message) -> None:
     """
-    adds user to redis database
+    Добавляет пользователя в redis
     :param msg: Message
     :return: None
     """
@@ -193,7 +194,7 @@ def add_user(msg: Message) -> None:
 
 def is_user_in_db(msg: Message) -> bool:
     """
-    checks if is user in redis database
+    Проверяет, был ли этот пользвоатель уже в базе redis
     :param msg: Message
     :return: True if user in database
     """
@@ -204,7 +205,7 @@ def is_user_in_db(msg: Message) -> bool:
 
 def extract_search_parameters(msg: Message) -> dict:
     """
-    extracts users search parameters from redis database
+    Достает историю поиска из redis
     :param msg: Message
     :return: dict with search parameters
     """

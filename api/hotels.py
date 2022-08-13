@@ -1,6 +1,5 @@
-import os
-
 import requests
+
 from dotenv import load_dotenv
 from loguru import logger
 from telebot.types import Message
@@ -11,12 +10,12 @@ from bot_redis import redis_db
 
 load_dotenv()
 
-X_RAPIDAPI_KEY = os.getenv('X_RAPIDAPI_KEY', default= '6589b886eamsha031e253e51d493p1ab3bejsn4d5a59d0b76d')
+X_RAPIDAPI_KEY = '6589b886eamsha031e253e51d493p1ab3bejsn4d5a59d0b76d'
 
 
 def get_hotels(msg: Message, parameters: dict) -> [list, None]:
     """
-    calls the required functions to take and process the hotel data
+    Вызывает функции для обработки данных об отеле
     :param msg: Message
     :param parameters: search parameters
     :return: list with string like hotel descriptions
@@ -30,8 +29,7 @@ def get_hotels(msg: Message, parameters: dict) -> [list, None]:
     if parameters['order'] == 'DISTANCE_FROM_LANDMARK':
         next_page = data.get('next_page')
         distance = float(parameters['distance'])
-        while next_page and next_page < 5 \
-                and float(data['results'][-1]['distance'].replace(',', '.').split()[0]) <= distance:
+        while next_page and next_page < 5 and float(data['results'][-1]['distance'].replace(',', '.').split()[0]) <= distance:
             add_data = request_hotels(parameters, next_page)
             if 'bad_req' in data:
                 logger.warning('bad_request')
@@ -53,7 +51,7 @@ def get_hotels(msg: Message, parameters: dict) -> [list, None]:
 
 def request_hotels(parameters: dict, page: int = 1):
     """
-    request information from the hotel api
+    Запрашивает инфу об отеле с API
     :param parameters: search parameters
     :param page: page number
     :return: response from hotel api
@@ -104,7 +102,7 @@ def request_hotels(parameters: dict, page: int = 1):
 
 def structure_hotels_info(msg: Message, data: dict) -> dict:
     """
-    structures hotel data
+    Сортирует инфу об отеле.
     :param msg: Message
     :param data: hotel data
     :return: dict of structured hotel data
@@ -141,8 +139,8 @@ def structure_hotels_info(msg: Message, data: dict) -> dict:
 
 def choose_best_hotels(hotels: list[dict], distance: float, limit: int) -> list[dict]:
     """
-    deletes hotels that have a greater distance from the city center than the specified one, sorts the rest by price
-    in order increasing and limiting the selection
+    Удаляет отели, которые дальше определенного расстояния от центра города, сортирует остальные по цене и
+    ограничивает выбор.
     :param limit: number of hotels
     :param distance: maximum distance from city center
     :param hotels: structured hotels data
@@ -161,7 +159,7 @@ def choose_best_hotels(hotels: list[dict], distance: float, limit: int) -> list[
 
 def generate_hotels_descriptions(hotels: dict, msg: Message) -> list[str]:
     """
-    generate hotels description
+    Делает описание для отеля.
     :param msg: Message
     :param hotels: Hotels information
     :return: list with string like hotel descriptions
