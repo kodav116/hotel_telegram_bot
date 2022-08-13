@@ -194,7 +194,7 @@ def add_user(msg: Message) -> None:
 
 def is_user_in_db(msg: Message) -> bool:
     """
-    Проверяет, был ли этот пользвоатель уже в базе redis
+    Проверяет, был ли этот пользователь уже в базе redis
     :param msg: Message
     :return: True if user in database
     """
