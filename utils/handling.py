@@ -49,9 +49,6 @@ def internationalize(key: str, msg: Message) -> str:
     return vocabulary[key][lang]
 
 
-_ = internationalize
-
-
 def is_input_correct(msg: Message) -> bool:
     """
    Проверят корректность информации для поиска
@@ -82,15 +79,15 @@ def get_parameters_information(msg: Message) -> str:
     city = parameters['destination_name']
     currency = parameters['currency']
     message = (
-        f"<b>{_('parameters', msg)}</b>\n"
-        f"{_('city', msg)}: {city}\n"
+        f"<b>{internationalize('parameters', msg)}</b>\n"
+        f"{internationalize('city', msg)}: {city}\n"
     )
     if sort_order == "DISTANCE_FROM_LANDMARK":
         price_min = parameters['min_price']
         price_max = parameters['max_price']
         distance = parameters['distance']
-        message += f"{_('price', msg)}: {price_min} - {price_max} {currency}\n" \
-                   f"{_('max_distance', msg)}: {distance} {_('dis_unit', msg)}"
+        message += f"{internationalize('price', msg)}: {price_min} - {price_max} {currency}\n" \
+                   f"{internationalize('max_distance', msg)}: {distance} {internationalize('dis_unit', msg)}"
     logger.info(f'Search parameters: {message}')
     return message
 
@@ -103,7 +100,7 @@ def make_message(msg: Message, prefix: str) -> str:
     :return: string like message
     """
     state = redis_db.hget(msg.chat.id, 'state')
-    message = _(prefix + state, msg)
+    message = internationalize(prefix + state, msg)
     if state == '2':
         message += f" ({redis_db.hget(msg.chat.id, 'currency')})"
 
@@ -136,7 +133,7 @@ def hotel_address(hotel: dict, msg: Message) -> str:
     :param hotel: dict - hotel information
     :return: hotel address
     """
-    message = _('no_information', msg)
+    message = internationalize('no_information', msg)
     if hotel.get('address'):
         message = hotel.get('address').get('streetAddress', message)
     return message
@@ -150,7 +147,7 @@ def hotel_rating(rating: float, msg: Message) -> str:
     :return: string like asterisks view hotel rating
     """
     if not rating:
-        return _('no_information', msg)
+        return internationalize('no_information', msg)
     return '⭐' * int(rating)
 
 

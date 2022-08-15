@@ -1,16 +1,20 @@
+import os
 import requests
 
-from dotenv import load_dotenv
 from loguru import logger
 from telebot.types import Message
 
-from utils.handling import check_in_n_out_dates, hotel_price, _, hotel_address, \
+from utils.handling import check_in_n_out_dates, hotel_price, internationalize, hotel_address, \
     hotel_rating
 from bot_redis import redis_db
 
-load_dotenv()
 
-X_RAPIDAPI_KEY = '6589b886eamsha031e253e51d493p1ab3bejsn4d5a59d0b76d'
+X_RAPIDAPI_KEY = os.environ.get('X_RAPIDAPI_KEY')
+
+headers = {
+        'x-rapidapi-key': X_RAPIDAPI_KEY,
+        'x-rapidapi-host': "hotels4.p.rapidapi.com"
+    }
 
 
 def get_hotels(msg: Message, parameters: dict) -> [list, None]:
@@ -78,21 +82,18 @@ def request_hotels(parameters: dict, page: int = 1):
 
     logger.info(f'Search parameters: {querystring}')
 
-    headers = {
-        'x-rapidapi-key': X_RAPIDAPI_KEY,
-        'x-rapidapi-host': "hotels4.p.rapidapi.com"
-    }
-
     try:
         response = requests.request("GET", url, headers=headers, params=querystring, timeout=20)
-        data = response.json()
-        if data.get('message'):
-            raise requests.exceptions.RequestException
-
-        logger.info(f'Hotels api(properties/list) response received: {data}')
-        return data
-
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('message'):
+                raise requests.exceptions.RequestException
+            logger.info(f'Hotels api(properties/list) response received: {data}')
+            return data
     except requests.exceptions.RequestException as e:
+        logger.error(f'Error receiving response: {e}')
+        return {'bad_req': 'bad_req'}
+    except requests.exceptions.Timeout as e:
         logger.error(f'Error receiving response: {e}')
         return {'bad_req': 'bad_req'}
     except Exception as e:

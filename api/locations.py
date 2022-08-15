@@ -4,13 +4,9 @@ import re
 import requests
 from telebot.types import Message
 from loguru import logger
-from dotenv import load_dotenv
+from api.hotels import X_RAPIDAPI_KEY, headers
 
 from bot_redis import redis_db
-
-load_dotenv()
-
-X_RAPIDAPI_KEY = os.getenv('X_RAPIDAPI_KEY', default= '6589b886eamsha031e253e51d493p1ab3bejsn4d5a59d0b76d')
 
 
 def exact_location(data: dict, loc_id: str) -> str:
@@ -38,23 +34,22 @@ def request_locations(msg):
         "locale": redis_db.hget(msg.chat.id, 'locale'),
     }
 
-    headers = {
-        'x-rapidapi-key': X_RAPIDAPI_KEY,
-        'x-rapidapi-host': "hotels4.p.rapidapi.com"
-    }
     logger.info(f'Parameters for search locations: {querystring}')
 
     try:
         response = requests.request("GET", url, headers=headers, params=querystring, timeout=20)
-        data = response.json()
-        logger.info(f'Hotels api(locations) response received: {data}')
+        if response.status_code == 200:
+            data = response.json()
+            logger.info(f'Hotels api(locations) response received: {data}')
 
-        if data.get('message'):
-            logger.error(f'Problems with subscription to hotels api {data}')
-            raise requests.exceptions.RequestException
-        return data
+            if data.get('message'):
+                logger.error(f'Problems with subscription to hotels api {data}')
+                raise requests.exceptions.RequestException
+            return data
     except requests.exceptions.RequestException as e:
         logger.error(f'Server error: {e}')
+    except requests.exceptions.Timeout as e:
+        logger.error(f'Error receiving response: {e}')
     except Exception as e:
         logger.error(f'Error: {e}')
 
