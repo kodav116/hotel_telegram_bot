@@ -26,16 +26,7 @@ def delete_tags(html_text):
     return text
 
 
-def request_locations(msg):
-    url = "https://hotels4.p.rapidapi.com/locations/search"
-
-    querystring = {
-        "query": msg.text.strip(),
-        "locale": redis_db.hget(msg.chat.id, 'locale'),
-    }
-
-    logger.info(f'Parameters for search locations: {querystring}')
-
+def location_api_req(url: str, headers: dict, querystring: dict):
     try:
         response = requests.request("GET", url, headers=headers, params=querystring, timeout=20)
         if response.status_code == 200:
@@ -48,10 +39,25 @@ def request_locations(msg):
             return data
     except requests.exceptions.RequestException as e:
         logger.error(f'Server error: {e}')
-    except requests.exceptions.Timeout as e:
-        logger.error(f'Error receiving response: {e}')
     except Exception as e:
         logger.error(f'Error: {e}')
+
+
+def request_locations(msg):
+    url = "https://hotels4.p.rapidapi.com/locations/search"
+
+    querystring = {
+        "query": msg.text.strip(),
+        "locale": redis_db.hget(msg.chat.id, 'locale'),
+    }
+
+    headers = {
+        'x-rapidapi-key': X_RAPIDAPI_KEY,
+        'x-rapidapi-host': "hotels4.p.rapidapi.com"
+    }
+    logger.info(f'Parameters for search locations: {querystring}')
+    data = location_api_req(url, headers, querystring)
+    return data
 
 
 def make_locations_list(msg: Message) -> dict:

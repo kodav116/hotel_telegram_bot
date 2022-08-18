@@ -53,6 +53,25 @@ def get_hotels(msg: Message, parameters: dict) -> [list, None]:
     return data
 
 
+def hotel_api_req(url: str, headers: dict, querystring: dict):
+    try:
+        response = requests.request("GET", url, headers=headers, params=querystring, timeout=20)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('message'):
+                raise requests.exceptions.RequestException
+
+            logger.info(f'Hotels api(properties/list) response received: {data}')
+            return data
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f'Error receiving response: {e}')
+        return {'bad_req': 'bad_req'}
+    except Exception as e:
+        logger.info(f'Error in function {request_hotels.__name__}: {e}')
+        return {'bad_req': 'bad_req'}
+
+
 def request_hotels(parameters: dict, page: int = 1):
     """
     Запрашивает инфу об отеле с API
@@ -82,23 +101,12 @@ def request_hotels(parameters: dict, page: int = 1):
 
     logger.info(f'Search parameters: {querystring}')
 
-    try:
-        response = requests.request("GET", url, headers=headers, params=querystring, timeout=20)
-        if response.status_code == 200:
-            data = response.json()
-            if data.get('message'):
-                raise requests.exceptions.RequestException
-            logger.info(f'Hotels api(properties/list) response received: {data}')
-            return data
-    except requests.exceptions.RequestException as e:
-        logger.error(f'Error receiving response: {e}')
-        return {'bad_req': 'bad_req'}
-    except requests.exceptions.Timeout as e:
-        logger.error(f'Error receiving response: {e}')
-        return {'bad_req': 'bad_req'}
-    except Exception as e:
-        logger.info(f'Error in function {request_hotels.__name__}: {e}')
-        return {'bad_req': 'bad_req'}
+    headers = {
+        'x-rapidapi-key': X_RAPIDAPI_KEY,
+        'x-rapidapi-host': "hotels4.p.rapidapi.com"
+    }
+    data = hotel_api_req(url, headers, querystring)
+    return data
 
 
 def structure_hotels_info(msg: Message, data: dict) -> dict:
