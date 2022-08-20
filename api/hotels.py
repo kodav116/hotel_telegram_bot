@@ -11,11 +11,6 @@ from bot_redis import redis_db
 
 X_RAPIDAPI_KEY = os.environ.get('X_RAPIDAPI_KEY')
 
-headers = {
-        'x-rapidapi-key': X_RAPIDAPI_KEY,
-        'x-rapidapi-host': "hotels4.p.rapidapi.com"
-    }
-
 
 def get_hotels(msg: Message, parameters: dict) -> [list, None]:
     """
@@ -94,6 +89,10 @@ def request_hotels(parameters: dict, page: int = 1):
         "locale": parameters['locale'],
         "currency": parameters['currency'],
     }
+    headers = {
+        'x-rapidapi-key': X_RAPIDAPI_KEY,
+        'x-rapidapi-host': "hotels4.p.rapidapi.com"
+    }
     if parameters['order'] == 'DISTANCE_FROM_LANDMARK':
         querystring['priceMax'] = parameters['max_price']
         querystring['priceMin'] = parameters['min_price']
@@ -101,10 +100,6 @@ def request_hotels(parameters: dict, page: int = 1):
 
     logger.info(f'Search parameters: {querystring}')
 
-    headers = {
-        'x-rapidapi-key': X_RAPIDAPI_KEY,
-        'x-rapidapi-host': "hotels4.p.rapidapi.com"
-    }
     data = hotel_api_req(url, headers, querystring)
     return data
 
@@ -178,11 +173,11 @@ def generate_hotels_descriptions(hotels: dict, msg: Message) -> list[str]:
 
     for hotel in hotels:
         message = (
-            f"{_('hotel', msg)}: {hotel.get('name')}\n"
-            f"{_('rating', msg)}: {hotel_rating(hotel.get('star_rating'), msg)}\n"
-            f"{_('price', msg)}: {hotel['price']} {redis_db.hget(msg.chat.id, 'currency')}\n"
-            f"{_('distance', msg)}: {hotel.get('distance')}\n"
-            f"{_('address', msg)}: {hotel.get('address')}\n"
+            f"{internationalize('hotel', msg)}: {hotel.get('name')}\n"
+            f"{internationalize('rating', msg)}: {hotel_rating(hotel.get('star_rating'), msg)}\n"
+            f"{internationalize('price', msg)}: {hotel['price']} {redis_db.hget(msg.chat.id, 'currency')}\n"
+            f"{internationalize('distance', msg)}: {hotel.get('distance')}\n"
+            f"{internationalize('address', msg)}: {hotel.get('address')}\n"
         )
         hotels_info.append(message)
     return hotels_info

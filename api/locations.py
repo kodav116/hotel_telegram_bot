@@ -4,7 +4,7 @@ import re
 import requests
 from telebot.types import Message
 from loguru import logger
-from api.hotels import X_RAPIDAPI_KEY, headers
+from api.hotels import X_RAPIDAPI_KEY
 
 from bot_redis import redis_db
 
@@ -50,7 +50,6 @@ def request_locations(msg):
         "query": msg.text.strip(),
         "locale": redis_db.hget(msg.chat.id, 'locale'),
     }
-
     headers = {
         'x-rapidapi-key': X_RAPIDAPI_KEY,
         'x-rapidapi-host': "hotels4.p.rapidapi.com"
