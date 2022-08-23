@@ -1,0 +1,449 @@
+2022-08-09T22:33:34.526074+0300 | ERROR | Unexpected error: Bot token is not defined
+Traceback (most recent call last):
+
+> File "D:\python_basic_diploma\main.py", line 83, in <module>
+    bot.polling(none_stop=True, interval=0)
+    │   └ <function TeleBot.polling at 0x000001D0A6E48670>
+    └ <telebot.TeleBot object at 0x000001D0A42C7C10>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 946, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+    │                                │                  │                 │                             └ 20
+    │                                │                  │                 └ 20
+    │                                │                  └ 0
+    │                                └ True
+    └ <telebot.TeleBot object at 0x000001D0A42C7C10>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 1021, in __threaded_polling
+    raise e
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 976, in __threaded_polling
+    polling_thread.raise_exceptions()
+    │              └ <function WorkerThread.raise_exceptions at 0x000001D0A4A16B90>
+    └ <WorkerThread(PollingThread, stopped daemon 904)>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 116, in raise_exceptions
+    raise self.exception_info
+          │    └ Exception('Bot token is not defined')
+          └ <WorkerThread(PollingThread, stopped daemon 904)>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 98, in run
+    task(*args, **kwargs)
+    │     │       └ {'allowed_updates': None}
+    │     └ (20, 20)
+    └ <bound method TeleBot.__retrieve_updates of <telebot.TeleBot object at 0x000001D0A42C7C10>>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 601, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+              │    │                   │    └ 0
+              │    │                   └ <telebot.TeleBot object at 0x000001D0A42C7C10>
+              │    └ <function TeleBot.get_updates at 0x000001D0A6E3FA30>
+              └ <telebot.TeleBot object at 0x000001D0A42C7C10>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 575, in get_updates
+    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
+                   │         │           │    │      │       │      │        │                └ 20
+                   │         │           │    │      │       │      │        └ None
+                   │         │           │    │      │       │      └ 20
+                   │         │           │    │      │       └ None
+                   │         │           │    │      └ 1
+                   │         │           │    └ None
+                   │         │           └ <telebot.TeleBot object at 0x000001D0A42C7C10>
+                   │         └ <function get_updates at 0x000001D0A6E3A170>
+                   └ <module 'telebot.apihelper' from 'D:\\Python\\lib\\site-packages\\telebot\\apihelper.py'>
+
+  File "D:\Python\lib\site-packages\telebot\apihelper.py", line 324, in get_updates
+    return _make_request(token, method_url, params=payload)
+           │             │      │                  └ {'offset': 1, 'timeout': 20, 'long_polling_timeout': 20}
+           │             │      └ 'getUpdates'
+           │             └ None
+           └ <function _make_request at 0x000001D0A6BCC9D0>
+
+  File "D:\Python\lib\site-packages\telebot\apihelper.py", line 80, in _make_request
+    raise Exception('Bot token is not defined')
+
+Exception: Bot token is not defined
+2022-08-09T22:45:51.142458+0300 | INFO | is_user_in_db called
+2022-08-09T22:45:54.997641+0300 | INFO | is_user_in_db called
+2022-08-09T22:45:55.323818+0300 | ERROR | Unexpected error: Error 10061 connecting to localhost:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+Traceback (most recent call last):
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 611, in connect
+    sock = self.retry.call_with_retry(
+           │    │     └ <function Retry.call_with_retry at 0x000001CEAE0C16C0>
+           │    └ <redis.retry.Retry object at 0x000001CEAE6114B0>
+           └ Connection<host=localhost,port=6379,db=1>
+
+  File "D:\Python\lib\site-packages\redis\retry.py", line 46, in call_with_retry
+    return do()
+           └ <function Connection.connect.<locals>.<lambda> at 0x000001CEAE5F4C10>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 612, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            │    │                         │    └ <function Connection.disconnect at 0x000001CEAE0C2B00>
+            │    │                         └ Connection<host=localhost,port=6379,db=1>
+            │    └ <function Connection._connect at 0x000001CEAE0C2950>
+            └ Connection<host=localhost,port=6379,db=1>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 677, in _connect
+    raise err
+          └ ConnectionRefusedError(10061, 'Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение', None, 10061...
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 665, in _connect
+    sock.connect(socket_address)
+    │    │       └ ('127.0.0.1', 6379)
+    │    └ <method 'connect' of '_socket.socket' objects>
+    └ <socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0>
+
+ConnectionRefusedError: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+> File "D:\python_basic_diploma\main.py", line 244, in <module>
+    bot.polling(none_stop=True, interval=0)
+    │   └ <function TeleBot.polling at 0x000001CEAE4E76D0>
+    └ <telebot.TeleBot object at 0x000001CEABA03820>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 946, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+    │                                │                  │                 │                             └ 20
+    │                                │                  │                 └ 20
+    │                                │                  └ 0
+    │                                └ True
+    └ <telebot.TeleBot object at 0x000001CEABA03820>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 1021, in __threaded_polling
+    raise e
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 977, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    │    │           └ <function ThreadPool.raise_exceptions at 0x000001CEAD95F910>
+    │    └ <telebot.util.ThreadPool object at 0x000001CEAE5C28F0>
+    └ <telebot.TeleBot object at 0x000001CEABA03820>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+          │    └ ConnectionError('Error 10061 connecting to localhost:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос ...
+          └ <telebot.util.ThreadPool object at 0x000001CEAE5C28F0>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 98, in run
+    task(*args, **kwargs)
+    │     │       └ {}
+    │     └ (<telebot.types.Message object at 0x000001CEAE6100A0>,)
+    └ <function get_text_messages at 0x000001CEAE5F4700>
+
+  File "D:\python_basic_diploma\main.py", line 232, in get_text_messages
+    if not is_user_in_db(message):
+           │             └ <telebot.types.Message object at 0x000001CEAE6100A0>
+           └ <function is_user_in_db at 0x000001CEAE5C7AC0>
+
+  File "D:\python_basic_diploma\utils\handling.py", line 202, in is_user_in_db
+    return redis_db.hget(chat_id, 'state') and redis_db.hget(chat_id, 'language')
+           │        │    │                     │        │    └ 5136120598
+           │        │    │                     │        └ <function HashCommands.hget at 0x000001CEAE07FAC0>
+           │        │    │                     └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+           │        │    └ 5136120598
+           │        └ <function HashCommands.hget at 0x000001CEAE07FAC0>
+           └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+
+  File "D:\Python\lib\site-packages\redis\commands\core.py", line 4768, in hget
+    return self.execute_command("HGET", name, key)
+           │    │                       │     └ 'state'
+           │    │                       └ 5136120598
+           │    └ <function Redis.execute_command at 0x000001CEAE0DDCF0>
+           └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+
+  File "D:\Python\lib\site-packages\redis\client.py", line 1235, in execute_command
+    conn = self.connection or pool.get_connection(command_name, **options)
+           │    │             │    │              │               └ {}
+           │    │             │    │              └ 'HGET'
+           │    │             │    └ <function ConnectionPool.get_connection at 0x000001CEAE0C37F0>
+           │    │             └ ConnectionPool<Connection<host=localhost,port=6379,db=1>>
+           │    └ None
+           └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 1387, in get_connection
+    connection.connect()
+    │          └ <function Connection.connect at 0x000001CEAE0C28C0>
+    └ Connection<host=localhost,port=6379,db=1>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 617, in connect
+    raise ConnectionError(self._error_message(e))
+          │               │    └ <function Connection._error_message at 0x000001CEAE0C29E0>
+          │               └ Connection<host=localhost,port=6379,db=1>
+          └ <class 'redis.exceptions.ConnectionError'>
+
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+2022-08-09T22:46:06.364523+0300 | INFO | is_user_in_db called
+2022-08-09T22:46:10.464855+0300 | ERROR | Unexpected error: Error 10061 connecting to localhost:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+Traceback (most recent call last):
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 611, in connect
+    sock = self.retry.call_with_retry(
+           │    │     └ <function Retry.call_with_retry at 0x000001C2213F16C0>
+           │    └ <redis.retry.Retry object at 0x000001C221951510>
+           └ Connection<host=localhost,port=6379,db=1>
+
+  File "D:\Python\lib\site-packages\redis\retry.py", line 46, in call_with_retry
+    return do()
+           └ <function Connection.connect.<locals>.<lambda> at 0x000001C221934CA0>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 612, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            │    │                         │    └ <function Connection.disconnect at 0x000001C2213F2B00>
+            │    │                         └ Connection<host=localhost,port=6379,db=1>
+            │    └ <function Connection._connect at 0x000001C2213F2950>
+            └ Connection<host=localhost,port=6379,db=1>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 677, in _connect
+    raise err
+          └ ConnectionRefusedError(10061, 'Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение', None, 10061...
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 665, in _connect
+    sock.connect(socket_address)
+    │    │       └ ('127.0.0.1', 6379)
+    │    └ <method 'connect' of '_socket.socket' objects>
+    └ <socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0>
+
+ConnectionRefusedError: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+> File "D:\python_basic_diploma\main.py", line 244, in <module>
+    bot.polling(none_stop=True, interval=0)
+    │   └ <function TeleBot.polling at 0x000001C2218276D0>
+    └ <telebot.TeleBot object at 0x000001C21EC93820>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 946, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+    │                                │                  │                 │                             └ 20
+    │                                │                  │                 └ 20
+    │                                │                  └ 0
+    │                                └ True
+    └ <telebot.TeleBot object at 0x000001C21EC93820>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 1021, in __threaded_polling
+    raise e
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 977, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    │    │           └ <function ThreadPool.raise_exceptions at 0x000001C220C1F910>
+    │    └ <telebot.util.ThreadPool object at 0x000001C2219028F0>
+    └ <telebot.TeleBot object at 0x000001C21EC93820>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+          │    └ ConnectionError('Error 10061 connecting to localhost:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос ...
+          └ <telebot.util.ThreadPool object at 0x000001C2219028F0>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 98, in run
+    task(*args, **kwargs)
+    │     │       └ {}
+    │     └ (<telebot.types.Message object at 0x000001C2219500A0>,)
+    └ <function get_text_messages at 0x000001C221934700>
+
+  File "D:\python_basic_diploma\main.py", line 232, in get_text_messages
+    if not is_user_in_db(message):
+           │             └ <telebot.types.Message object at 0x000001C2219500A0>
+           └ <function is_user_in_db at 0x000001C221907AC0>
+
+  File "D:\python_basic_diploma\utils\handling.py", line 202, in is_user_in_db
+    return redis_db.hget(chat_id, 'state') and redis_db.hget(chat_id, 'language')
+           │        │    │                     │        │    └ 5136120598
+           │        │    │                     │        └ <function HashCommands.hget at 0x000001C2213AFAC0>
+           │        │    │                     └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+           │        │    └ 5136120598
+           │        └ <function HashCommands.hget at 0x000001C2213AFAC0>
+           └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+
+  File "D:\Python\lib\site-packages\redis\commands\core.py", line 4768, in hget
+    return self.execute_command("HGET", name, key)
+           │    │                       │     └ 'state'
+           │    │                       └ 5136120598
+           │    └ <function Redis.execute_command at 0x000001C22140DCF0>
+           └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+
+  File "D:\Python\lib\site-packages\redis\client.py", line 1235, in execute_command
+    conn = self.connection or pool.get_connection(command_name, **options)
+           │    │             │    │              │               └ {}
+           │    │             │    │              └ 'HGET'
+           │    │             │    └ <function ConnectionPool.get_connection at 0x000001C2213F37F0>
+           │    │             └ ConnectionPool<Connection<host=localhost,port=6379,db=1>>
+           │    └ None
+           └ Redis<ConnectionPool<Connection<host=localhost,port=6379,db=1>>>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 1387, in get_connection
+    connection.connect()
+    │          └ <function Connection.connect at 0x000001C2213F28C0>
+    └ Connection<host=localhost,port=6379,db=1>
+
+  File "D:\Python\lib\site-packages\redis\connection.py", line 617, in connect
+    raise ConnectionError(self._error_message(e))
+          │               │    └ <function Connection._error_message at 0x000001C2213F29E0>
+          │               └ Connection<host=localhost,port=6379,db=1>
+          └ <class 'redis.exceptions.ConnectionError'>
+
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+2022-08-15T21:13:46.533696+0300 | INFO | is_user_in_db called
+2022-08-15T21:13:54.474322+0300 | INFO | is_user_in_db called
+2022-08-15T21:13:54.479309+0300 | INFO | "help" command is called
+2022-08-15T21:13:58.613002+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:13:58.613992+0300 | INFO | is_user_in_db called
+2022-08-15T21:13:58.618988+0300 | INFO | "lowprice" command is called
+2022-08-15T21:13:58.619976+0300 | INFO | PRICE
+2022-08-15T21:13:58.620970+0300 | INFO | Current state: 1
+2022-08-15T21:13:58.623966+0300 | ERROR | Unexpected error: name '_' is not defined
+Traceback (most recent call last):
+
+> File "D:\python_basic_diploma\main.py", line 244, in <module>
+    bot.polling(none_stop=True, interval=0)
+    │   └ <function TeleBot.polling at 0x000001EFA24B76D0>
+    └ <telebot.TeleBot object at 0x000001EF9F90AA40>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 946, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+    │                                │                  │                 │                             └ 20
+    │                                │                  │                 └ 20
+    │                                │                  └ 0
+    │                                └ True
+    └ <telebot.TeleBot object at 0x000001EF9F90AA40>
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 1021, in __threaded_polling
+    raise e
+
+  File "D:\Python\lib\site-packages\telebot\__init__.py", line 977, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    │    │           └ <function ThreadPool.raise_exceptions at 0x000001EFA18AF910>
+    │    └ <telebot.util.ThreadPool object at 0x000001EFA25C0AC0>
+    └ <telebot.TeleBot object at 0x000001EF9F90AA40>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+          │    └ NameError("name '_' is not defined")
+          └ <telebot.util.ThreadPool object at 0x000001EFA25C0AC0>
+
+  File "D:\Python\lib\site-packages\telebot\util.py", line 98, in run
+    task(*args, **kwargs)
+    │     │       └ {}
+    │     └ (<telebot.types.Message object at 0x000001EFA25C0BB0>,)
+    └ <function get_searching_commands at 0x000001EFA25BC4C0>
+
+  File "D:\python_basic_diploma\main.py", line 89, in get_searching_commands
+    bot.send_message(chat_id, make_message(message, 'question_'))
+    │   │            │        │            └ <telebot.types.Message object at 0x000001EFA25C0BB0>
+    │   │            │        └ <function make_message at 0x000001EFA2597880>
+    │   │            └ 5136120598
+    │   └ <function TeleBot.send_message at 0x000001EFA24C0430>
+    └ <telebot.TeleBot object at 0x000001EF9F90AA40>
+
+  File "D:\python_basic_diploma\utils\handling.py", line 103, in make_message
+    message = _(prefix + state, msg)
+                │        │      └ <telebot.types.Message object at 0x000001EFA25C0BB0>
+                │        └ '1'
+                └ 'question_'
+
+NameError: name '_' is not defined
+2022-08-15T21:16:00.660686+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:16:00.662670+0300 | INFO | is_user_in_db called
+2022-08-15T21:16:02.704901+0300 | INFO | "lowprice" command is called
+2022-08-15T21:16:02.705899+0300 | INFO | PRICE
+2022-08-15T21:16:02.705899+0300 | INFO | Current state: 1
+2022-08-15T21:16:09.160319+0300 | INFO | is_user_in_db called
+2022-08-15T21:16:09.373749+0300 | INFO | Parameters for search locations: {'query': 'Las', 'locale': 'ru_RU'}
+2022-08-15T21:16:09.374746+0300 | ERROR | Server error: Invalid URL 'None': No scheme supplied. Perhaps you meant http://None?
+2022-08-15T21:16:23.697223+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:16:23.697223+0300 | INFO | is_user_in_db called
+2022-08-15T21:16:23.702209+0300 | INFO | "highprice" command is called
+2022-08-15T21:16:23.703205+0300 | INFO | PRICE_HIGHEST_FIRST
+2022-08-15T21:16:23.704203+0300 | INFO | Current state: 1
+2022-08-15T21:16:26.909858+0300 | INFO | is_user_in_db called
+2022-08-15T21:16:27.031554+0300 | INFO | Parameters for search locations: {'query': 'new york', 'locale': 'ru_RU'}
+2022-08-15T21:16:27.032534+0300 | ERROR | Server error: Invalid URL 'None': No scheme supplied. Perhaps you meant http://None?
+2022-08-15T21:17:53.443519+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:17:53.443519+0300 | INFO | is_user_in_db called
+2022-08-15T21:17:55.480245+0300 | INFO | "highprice" command is called
+2022-08-15T21:17:55.481244+0300 | INFO | PRICE_HIGHEST_FIRST
+2022-08-15T21:17:55.481244+0300 | INFO | Current state: 1
+2022-08-15T21:17:57.224468+0300 | INFO | is_user_in_db called
+2022-08-15T21:17:57.335153+0300 | INFO | Parameters for search locations: {'query': 'las', 'locale': 'ru_RU'}
+2022-08-15T21:17:57.336151+0300 | ERROR | Server error: Invalid URL 'None': No scheme supplied. Perhaps you meant http://None?
+2022-08-15T21:18:48.096804+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:18:48.097804+0300 | INFO | is_user_in_db called
+2022-08-15T21:18:50.138313+0300 | INFO | "lowprice" command is called
+2022-08-15T21:18:50.138313+0300 | INFO | PRICE
+2022-08-15T21:18:50.139312+0300 | INFO | Current state: 1
+2022-08-15T21:18:51.435906+0300 | INFO | is_user_in_db called
+2022-08-15T21:18:51.600466+0300 | INFO | Parameters for search locations: {'query': 'las', 'locale': 'ru_RU'}
+2022-08-15T21:19:31.096071+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:19:31.096071+0300 | INFO | is_user_in_db called
+2022-08-15T21:19:31.100063+0300 | INFO | "lowprice" command is called
+2022-08-15T21:19:31.102062+0300 | INFO | PRICE
+2022-08-15T21:19:31.103059+0300 | INFO | Current state: 1
+2022-08-15T21:19:33.544893+0300 | INFO | is_user_in_db called
+2022-08-15T21:19:33.785302+0300 | INFO | Parameters for search locations: {'query': 'las', 'locale': 'ru_RU'}
+2022-08-15T21:20:03.562063+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:20:03.563066+0300 | INFO | is_user_in_db called
+2022-08-15T21:20:05.619797+0300 | INFO | "highprice" command is called
+2022-08-15T21:20:05.620795+0300 | INFO | PRICE_HIGHEST_FIRST
+2022-08-15T21:20:05.620795+0300 | INFO | Current state: 1
+2022-08-15T21:20:08.617365+0300 | INFO | is_user_in_db called
+2022-08-15T21:20:08.958454+0300 | INFO | Parameters for search locations: {'query': 'new york', 'locale': 'ru_RU'}
+2022-08-15T21:26:02.990024+0300 | INFO | is_user_in_db called
+2022-08-15T21:26:10.387942+0300 | INFO | is_user_in_db called
+2022-08-15T21:26:10.533553+0300 | INFO | Parameters for search locations: {'query': 'Wash', 'locale': 'ru_RU'}
+2022-08-15T21:27:01.216722+0300 | INFO | is_user_in_db called
+2022-08-15T21:27:07.797743+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:27:07.798763+0300 | INFO | is_user_in_db called
+2022-08-15T21:27:07.803723+0300 | INFO | "highprice" command is called
+2022-08-15T21:27:07.803723+0300 | INFO | PRICE_HIGHEST_FIRST
+2022-08-15T21:27:07.804718+0300 | INFO | Current state: 1
+2022-08-15T21:27:10.257643+0300 | INFO | is_user_in_db called
+2022-08-15T21:27:10.384559+0300 | INFO | Parameters for search locations: {'query': 'wash', 'locale': 'ru_RU'}
+2022-08-15T21:28:55.863816+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:28:55.864810+0300 | INFO | is_user_in_db called
+2022-08-15T21:28:57.915862+0300 | INFO | "lowprice" command is called
+2022-08-15T21:28:57.916856+0300 | INFO | PRICE
+2022-08-15T21:28:57.916856+0300 | INFO | Current state: 1
+2022-08-15T21:29:00.092946+0300 | INFO | is_user_in_db called
+2022-08-15T21:29:00.464481+0300 | INFO | Parameters for search locations: {'query': 'wash', 'locale': 'ru_RU'}
+2022-08-15T21:29:01.061276+0300 | INFO | Hotels api(locations) response received: {'message': 'Invalid API key. Go to https://docs.rapidapi.com/docs/keys for more info.'}
+2022-08-15T21:29:01.062306+0300 | ERROR | Problems with subscription to hotels api {'message': 'Invalid API key. Go to https://docs.rapidapi.com/docs/keys for more info.'}
+2022-08-15T21:29:01.062306+0300 | ERROR | Server error: 
+2022-08-15T21:29:38.603816+0300 | INFO | 
+====================================================================================================
+
+2022-08-15T21:29:38.606812+0300 | INFO | is_user_in_db called
+2022-08-15T21:29:40.642537+0300 | INFO | "lowprice" command is called
+2022-08-15T21:29:40.642537+0300 | INFO | PRICE
+2022-08-15T21:29:40.643535+0300 | INFO | Current state: 1
+2022-08-15T21:29:43.025148+0300 | INFO | is_user_in_db called
+2022-08-15T21:29:43.137844+0300 | INFO | Parameters for search locations: {'query': 'wash', 'locale': 'ru_RU'}
+2022-08-15T21:29:43.712185+0300 | INFO | Hotels api(locations) response received: {'message': 'Invalid API key. Go to https://docs.rapidapi.com/docs/keys for more info.'}
+2022-08-15T21:29:43.712185+0300 | ERROR | Problems with subscription to hotels api {'message': 'Invalid API key. Go to https://docs.rapidapi.com/docs/keys for more info.'}
+2022-08-15T21:29:43.712185+0300 | ERROR | Server error: 
