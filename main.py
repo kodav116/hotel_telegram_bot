@@ -2,6 +2,8 @@ import telebot
 from telebot.types import Message, CallbackQuery
 from loguru import logger
 
+from handlers_.message_handlers_ import bestdeal_, highprice, lowprice
+
 from api.hotels import get_hotels
 from api.locations import exact_location, make_locations_list
 from utils.handling import internationalize, is_input_correct, get_parameters_information, \
@@ -70,18 +72,11 @@ def get_searching_commands(message: Message) -> None:
     chat_id = message.chat.id
     redis_db.hset(chat_id, 'state', 1)
     if 'lowprice' in message.text:
-        redis_db.hset(chat_id, 'order', 'PRICE')
-        logger.info('"lowprice" command is called')
+        lowprice.get_searching_commands(message)
     elif 'highprice' in message.text:
-        redis_db.hset(chat_id, 'order', 'PRICE_HIGHEST_FIRST')
-        logger.info('"highprice" command is called')
+        highprice.get_searching_commands(message)
     else:
-        redis_db.hset(chat_id, 'order', 'DISTANCE_FROM_LANDMARK')
-        logger.info('"bestdeal" command is called')
-    logger.info(redis_db.hget(chat_id, 'order'))
-    state = redis_db.hget(chat_id, 'state')
-    logger.info(f"Current state: {state}")
-    bot.send_message(chat_id, make_message(message, 'question_'))
+        bestdeal_.get_searching_commands(message)
 
 
 @bot.message_handler(commands=['help', 'start'])
