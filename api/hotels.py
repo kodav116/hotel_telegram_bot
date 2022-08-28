@@ -1,4 +1,3 @@
-import os
 import requests
 
 from loguru import logger
@@ -7,9 +6,7 @@ from telebot.types import Message
 from utils.handling import check_in_n_out_dates, hotel_price, internationalize, hotel_address, \
     hotel_rating
 from bot_redis import redis_db
-
-
-X_RAPIDAPI_KEY = os.environ.get('X_RAPIDAPI_KEY')
+from loader import X_RAPIDAPI_KEY
 
 
 def get_hotels(msg: Message, parameters: dict) -> [list, None]:
@@ -129,7 +126,7 @@ def structure_hotels_info(msg: Message, data: dict) -> dict:
                 hotel['price'] = hotel_price(cur_hotel)
                 if not hotel['price']:
                     continue
-                hotel['distance'] = cur_hotel.get('landmarks')[0].get('distance', _('no_information', msg))
+                hotel['distance'] = cur_hotel.get('landmarks')[0].get('distance', internationalize('no_information', msg))
                 hotel['address'] = hotel_address(cur_hotel, msg)
 
                 if hotel not in hotels['results']:

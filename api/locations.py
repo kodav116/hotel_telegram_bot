@@ -1,10 +1,9 @@
-import os
 import re
 
 import requests
 from telebot.types import Message
 from loguru import logger
-from api.hotels import X_RAPIDAPI_KEY
+from loader import X_RAPIDAPI_KEY
 
 from bot_redis import redis_db
 
@@ -45,7 +44,6 @@ def location_api_req(url: str, headers: dict, querystring: dict):
 
 def request_locations(msg):
     url = "https://hotels4.p.rapidapi.com/locations/search"
-
     querystring = {
         "query": msg.text.strip(),
         "locale": redis_db.hget(msg.chat.id, 'locale'),
