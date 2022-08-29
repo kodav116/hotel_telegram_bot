@@ -9,7 +9,13 @@ from api.locations import exact_location
 import telebot
 
 
+@bot.callback_query_handler(func=lambda call: True)
 def keyboard_handler(call: CallbackQuery) -> None:
+    """
+    делает кнопки
+    :param call: CallbackQuery
+    :return: None
+    """
     logger.info(f'Function {keyboard_handler.__name__} called with argument: {call}')
     chat_id = call.message.chat.id
     bot.edit_message_reply_markup(chat_id=chat_id, message_id=call.message.message_id)

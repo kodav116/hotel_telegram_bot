@@ -10,6 +10,11 @@ from bot_redis import redis_db
 
 
 def get_search_parameters(msg: Message) -> None:
+    """
+    правит параметры поиска
+    :param msg: Message
+    :return: None
+    """
     logger.info(f'Function {get_command_settings.__name__} called with argument: {msg}')
     chat_id = msg.chat.id
     state = redis_db.hget(chat_id, 'state')

@@ -7,6 +7,11 @@ import telebot
 
 
 def get_locations(msg: Message):
+    """
+    берет имя места, собирает места с похожим именем и шлет в чат
+    :param msg: Message
+    :return: None
+    """
     if not is_input_correct(msg):
         bot.send_message(msg.chat.id, make_message(msg, 'mistake_'))
     else:

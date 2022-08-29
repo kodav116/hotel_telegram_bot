@@ -1,19 +1,24 @@
-import telebot
 from telebot.types import Message
 from loguru import logger
 
-from utils.handling import make_message
+from utils.handling import make_message, is_user_in_db, add_user
 from bot_redis import redis_db
-
 from loader import bot
 
 
-def get_searching_commands(message: Message):
+@bot.message_handler(commands=['highprice'])
+def get_searching_commands(message: Message) -> None:
+
     """
     ""/highprice"  - получает команду и начинает отбирать отели от самой высокой цены
     :param message: Message
     :return: None
     """
+    logger.info("\n" + "=" * 100 + "\n")
+    if not is_user_in_db(message):
+        add_user(message)
+    chat_id = message.chat.id
+    redis_db.hset(chat_id, 'state', 1)
     chat_id = message.chat.id
     redis_db.hset(chat_id, 'order', 'PRICE_HIGHEST_FIRST')
     logger.info('"highprice" command is called')

@@ -5,6 +5,7 @@ from loguru import logger
 from loader import bot
 
 
+@bot.message_handler(commands=['help', 'start'])
 def get_command_help(message: Message) -> None:
     """
     "/help" - присылает команды в чат

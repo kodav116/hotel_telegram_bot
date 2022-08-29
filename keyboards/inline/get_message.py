@@ -7,6 +7,7 @@ from keyboards.reply.search_parameters import get_search_parameters
 from loader import bot
 
 
+@bot.message_handler(content_types=['text'])
 def get_text_messages(message) -> None:
     """
     обработка сообщений

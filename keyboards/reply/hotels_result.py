@@ -8,6 +8,11 @@ from telebot.types import Message
 
 
 def hotels_list(msg: Message) -> None:
+    """
+    присылает результаты поиска в чат
+    :param msg: Message
+    :return: None
+    """
     chat_id = msg.chat.id
     wait_msg = bot.send_message(chat_id, internationalize('wait', msg))
     params = extract_search_parameters(msg)

@@ -6,7 +6,13 @@ from telebot.types import Message
 import telebot
 
 
+@bot.message_handler(commands=['settings'])
 def get_command_settings(message: Message) -> None:
+    """
+    "/settings" - открывает настройки
+    :param message: Message
+    :return: None
+    """
     if not is_user_in_db(message):
         add_user(message)
     logger.info(f'Функция {get_command_settings.__name__} вызвана с параметром: {message}')
