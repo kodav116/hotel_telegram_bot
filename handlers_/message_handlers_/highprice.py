@@ -5,8 +5,7 @@ from loguru import logger
 from utils.handling import make_message
 from bot_redis import redis_db
 
-BOT_TOKEN = '5550473457:AAEmMZsfZp5LTlzFQJvO4PiNvnc0aG1uD5Y'
-bot = telebot.TeleBot(BOT_TOKEN, parse_mode='HTML')
+from loader import bot
 
 
 def get_searching_commands(message: Message):
