@@ -1,16 +1,18 @@
-# This is a sample Python script.
+from telebot.types import Message, CallbackQuery
+from loguru import logger
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from handlers_.message_handlers_ import bestdeal_, highprice, lowprice, settings, help
+from handlers_.callback_handlers import gets_locations
 
+from keyboards.inline import buttons, get_message
+from keyboards.reply import hotels_result, search_parameters
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from utils.handling import logger_config, is_user_in_db, add_user
+from bot_redis import redis_db
+from loader import bot
+logger.configure(**logger_config)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+try:
+    bot.polling(none_stop=True, interval=0)
+except Exception as e:
+    logger.opt(exception=True).error(f'Unexpected error: {e}')
