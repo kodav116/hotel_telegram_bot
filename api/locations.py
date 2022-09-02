@@ -1,10 +1,9 @@
-import os
 import re
 
 import requests
 from telebot.types import Message
 from loguru import logger
-from api.hotels import X_RAPIDAPI_KEY
+from loader import X_RAPIDAPI_KEY
 
 from bot_redis import redis_db
 
@@ -22,11 +21,23 @@ def exact_location(data: dict, loc_id: str) -> str:
 
 
 def delete_tags(html_text):
+    """
+    Удаляет спец. символы
+    :param html_text: текст до замены
+    :return: текст после замены
+    """
     text = re.sub('<([^<>]*)>', '', html_text)
     return text
 
 
 def location_api_req(url: str, headers: dict, querystring: dict):
+    """
+    Сам запрос на API сервер
+    :param url: ссылка на сайт APi
+    :param headers: хост и ключ API
+    :param querystring: информация о месте
+    :return: ответ сервера
+    """
     try:
         response = requests.request("GET", url, headers=headers, params=querystring, timeout=20)
         if response.status_code == 200:
@@ -44,8 +55,12 @@ def location_api_req(url: str, headers: dict, querystring: dict):
 
 
 def request_locations(msg):
+    """
+    Запрашивает инфу об отеле с API и возвращает её
+    :param msg: Message
+    :return: информация с API о месте
+    """
     url = "https://hotels4.p.rapidapi.com/locations/search"
-
     querystring = {
         "query": msg.text.strip(),
         "locale": redis_db.hget(msg.chat.id, 'locale'),
@@ -61,9 +76,9 @@ def request_locations(msg):
 
 def make_locations_list(msg: Message) -> dict:
     """
-   Получает информацию с API про отели и делает dict: location name - location id
+   Получает информацию с API про отели и делает dict: location name - location id (место и id места)
     :param msg: Message
-    :return: dict: location name - location id
+    :return: dict: location name - location id (место и id места)
     """
     data = request_locations(msg)
     if not data:
