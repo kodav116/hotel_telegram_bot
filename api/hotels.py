@@ -1,4 +1,3 @@
-import os
 import requests
 
 from loguru import logger
@@ -7,17 +6,15 @@ from telebot.types import Message
 from utils.handling import check_in_n_out_dates, hotel_price, internationalize, hotel_address, \
     hotel_rating
 from bot_redis import redis_db
-
-
-X_RAPIDAPI_KEY = os.environ.get('X_RAPIDAPI_KEY')
+from loader import X_RAPIDAPI_KEY
 
 
 def get_hotels(msg: Message, parameters: dict) -> [list, None]:
     """
     Вызывает функции для обработки данных об отеле
     :param msg: Message
-    :param parameters: search parameters
-    :return: list with string like hotel descriptions
+    :param parameters: поисковой параметр
+    :return: list с информацией об отеле в форме str
     """
     data = request_hotels(parameters)
     if 'bad_req' in data:
@@ -49,6 +46,13 @@ def get_hotels(msg: Message, parameters: dict) -> [list, None]:
 
 
 def hotel_api_req(url: str, headers: dict, querystring: dict):
+    """
+    Сам запрос на сервер API отелей
+    :param url: ссылка на API
+    :param headers: dict с хостом API и ключом к нему
+    :param querystring: dict с информацией об отеле
+    :return: ответ сервера
+    """
     try:
         response = requests.request("GET", url, headers=headers, params=querystring, timeout=20)
         if response.status_code == 200:
@@ -69,10 +73,10 @@ def hotel_api_req(url: str, headers: dict, querystring: dict):
 
 def request_hotels(parameters: dict, page: int = 1):
     """
-    Запрашивает инфу об отеле с API
-    :param parameters: search parameters
-    :param page: page number
-    :return: response from hotel api
+    Запрашивает инфу об отеле с API и возвращает её
+    :param parameters: поисковой параметр
+    :param page: номер страницы
+    :return: информация с API
     """
     logger.info(f'Function {request_hotels.__name__} called with argument: page = {page}, parameters = {parameters}')
     url = "https://hotels4.p.rapidapi.com/properties/list"
@@ -108,8 +112,8 @@ def structure_hotels_info(msg: Message, data: dict) -> dict:
     """
     Сортирует инфу об отеле.
     :param msg: Message
-    :param data: hotel data
-    :return: dict of structured hotel data
+    :param data: информация об отеле
+    :return: словарь со структурированной информацией об отеле
     """
     logger.info(f'Function {structure_hotels_info.__name__} called with argument: msd = {msg}, data = {data}')
     data = data.get('data', {}).get('body', {}).get('searchResults')
@@ -129,7 +133,7 @@ def structure_hotels_info(msg: Message, data: dict) -> dict:
                 hotel['price'] = hotel_price(cur_hotel)
                 if not hotel['price']:
                     continue
-                hotel['distance'] = cur_hotel.get('landmarks')[0].get('distance', _('no_information', msg))
+                hotel['distance'] = cur_hotel.get('landmarks')[0].get('distance', internationalize('no_information', msg))
                 hotel['address'] = hotel_address(cur_hotel, msg)
 
                 if hotel not in hotels['results']:
@@ -145,10 +149,10 @@ def choose_best_hotels(hotels: list[dict], distance: float, limit: int) -> list[
     """
     Удаляет отели, которые дальше определенного расстояния от центра города, сортирует остальные по цене и
     ограничивает выбор.
-    :param limit: number of hotels
-    :param distance: maximum distance from city center
-    :param hotels: structured hotels data
-    :return: required number of best hotels
+    :param limit: сколько нужно отелей
+    :param distance: расстояние от центра города
+    :param hotels: структурированная инофрмация об отелях
+    :return: нужное кол-во лучших отелей
     """
     logger.info(f'Function {choose_best_hotels.__name__} called with arguments: '
                 f'distance = {distance}, quantity = {limit}\n{hotels}')
@@ -165,8 +169,8 @@ def generate_hotels_descriptions(hotels: dict, msg: Message) -> list[str]:
     """
     Делает описание для отеля.
     :param msg: Message
-    :param hotels: Hotels information
-    :return: list with string like hotel descriptions
+    :param hotels: информация об отеле
+    :return: list с информацией об отеле в форме str
     """
     logger.info(f'Function {generate_hotels_descriptions.__name__} called with argument {hotels}')
     hotels_info = []

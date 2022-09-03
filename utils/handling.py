@@ -41,9 +41,9 @@ logger_config = {
 def internationalize(key: str, msg: Message) -> str:
     """
     берет текст из словаря согласно ключу языка
-    :param key: str key
+    :param key: ключ str
     :param msg: Message
-    :return: text of message from vocabulary
+    :return: сообщение из словаря
     """
     lang = redis_db.hget(msg.chat.id, 'language')
     return vocabulary[key][lang]
@@ -53,7 +53,7 @@ def is_input_correct(msg: Message) -> bool:
     """
    Проверят корректность информации для поиска
     :param msg: Message
-    :return: True if the message text is correct
+    :return: Если текст корректен, то True
     """
     state = redis_db.hget(msg.chat.id, 'state')
     msg = msg.text.strip()
@@ -70,8 +70,8 @@ def is_input_correct(msg: Message) -> bool:
 def get_parameters_information(msg: Message) -> str:
     """
     Генерация сообщения с параметрами поиска
-    :param msg:
-    :return: string like information about search parameters
+    :param msg: Message
+    :return: информация о поисковом параметре в форме str
     """
     logger.info(f'Function {get_parameters_information.__name__} called with argument: {msg}')
     parameters = redis_db.hgetall(msg.chat.id)
@@ -96,8 +96,8 @@ def make_message(msg: Message, prefix: str) -> str:
     """
    Возвращает вопрос или сообщение об ошибочном вводе, в зависмости от страны и префикса
     :param msg: Message
-    :param prefix: prefix for key in vocabulary dictionary
-    :return: string like message
+    :param prefix: префикс для ключа в словаре
+    :return: сообщение в форме str
     """
     state = redis_db.hget(msg.chat.id, 'state')
     message = internationalize(prefix + state, msg)
@@ -110,8 +110,8 @@ def make_message(msg: Message, prefix: str) -> str:
 def hotel_price(hotel: dict) -> int:
     """
     Возвращает цену отеля
-    :param hotel: dict - hotel information
-    :return: integer or float like number
+    :param hotel: информация об отеле в форме dict
+    :return: число в форме float или int
     """
 
     price = 0
@@ -130,8 +130,8 @@ def hotel_address(hotel: dict, msg: Message) -> str:
     """
     Возвращает адрес отеля
     :param msg: Message
-    :param hotel: dict - hotel information
-    :return: hotel address
+    :param hotel: информация об отеле в форме dict
+    :return: адрес отеля
     """
     message = internationalize('no_information', msg)
     if hotel.get('address'):
@@ -142,9 +142,9 @@ def hotel_address(hotel: dict, msg: Message) -> str:
 def hotel_rating(rating: float, msg: Message) -> str:
     """
     Возвращает звезды отеля
-    :param rating: hotel rating
+    :param rating: рейтинг отеля
     :param msg: Message
-    :return: string like asterisks view hotel rating
+    :return: звезды отеля в форме str
     """
     if not rating:
         return internationalize('no_information', msg)
@@ -154,9 +154,9 @@ def hotel_rating(rating: float, msg: Message) -> str:
 def check_in_n_out_dates(check_in: datetime = None, check_out: datetime = None) -> dict:
     """
     Делает дату въезда и выезда, если без них, то берет сегодня и завтра
-    :param check_in: check-in date
-    :param check_out: check-out date
-    :return: dict with check-in and check-out dates
+    :param check_in: въезд
+    :param check_out: выезд
+    :return: dict с въездом и выездом
     """
     dates = {}
     if not check_in:
@@ -193,7 +193,7 @@ def is_user_in_db(msg: Message) -> bool:
     """
     Проверяет, был ли этот пользователь уже в базе redis
     :param msg: Message
-    :return: True if user in database
+    :return: если пользователь уже был, то True
     """
     logger.info('is_user_in_db called')
     chat_id = msg.chat.id
@@ -204,7 +204,7 @@ def extract_search_parameters(msg: Message) -> dict:
     """
     Достает историю поиска из redis
     :param msg: Message
-    :return: dict with search parameters
+    :return: dict c поисковым параметром
     """
     logger.info(f"Function {extract_search_parameters.__name__} called")
     params = redis_db.hgetall(msg.chat.id)
