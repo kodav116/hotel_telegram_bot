@@ -1,7 +1,7 @@
 from utils.handling import is_user_in_db, add_user, internationalize
 from bot_redis import redis_db
 
-from handlers_.callback_handlers.gets_locations import get_locations
+from handlers.callback_handlers.gets_locations import get_locations
 from keyboards.reply.search_parameters import get_search_parameters
 
 from loader import bot
