@@ -4,7 +4,7 @@ from loader import bot
 from keyboards.reply.hotels_result import hotels_list
 
 from utils.handling import make_message, steps, is_input_correct
-from handlers_.message_handlers_.settings import get_command_settings
+from handlers.message_handlers.settings import get_command_settings
 
 from bot_redis import redis_db
 

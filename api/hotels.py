@@ -79,7 +79,7 @@ def request_hotels(parameters: dict, page: int = 1):
     :return: информация с API
     """
     logger.info(f'Function {request_hotels.__name__} called with argument: page = {page}, parameters = {parameters}')
-    url = "https://hotels4.p.rapidapi.com/properties/list"
+    url = 'https://hotels4.p.rapidapi.com/locations/v3/search'
     dates = check_in_n_out_dates()
 
     querystring = {

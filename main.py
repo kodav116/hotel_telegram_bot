@@ -1,8 +1,8 @@
 from telebot.types import Message, CallbackQuery
 from loguru import logger
 
-from handlers_.message_handlers_ import bestdeal_, highprice, lowprice, settings, help
-from handlers_.callback_handlers import gets_locations
+from handlers.message_handlers import bestdeal_, highprice, lowprice, settings, help
+from handlers.callback_handlers import gets_locations
 
 from keyboards.inline import buttons, get_message
 from keyboards.reply import hotels_result, search_parameters

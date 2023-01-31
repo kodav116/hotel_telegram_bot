@@ -33,7 +33,7 @@ def delete_tags(html_text):
 def location_api_req(url: str, headers: dict, querystring: dict):
     """
     Сам запрос на API сервер
-    :param url: ссылка на сайт APi
+    :param url: ссылка на сайт API
     :param headers: хост и ключ API
     :param querystring: информация о месте
     :return: ответ сервера
@@ -60,7 +60,7 @@ def request_locations(msg):
     :param msg: Message
     :return: информация с API о месте
     """
-    url = "https://hotels4.p.rapidapi.com/locations/search"
+    url = 'https://hotels4.p.rapidapi.com/locations/v3/search'
     querystring = {
         "query": msg.text.strip(),
         "locale": redis_db.hget(msg.chat.id, 'locale'),
